@@ -6,6 +6,9 @@
 # App Settings
 appsettings.json
 
+# Node Modules
+node_modules
+
 # User-specific files
 *.rsuser
 *.suo
