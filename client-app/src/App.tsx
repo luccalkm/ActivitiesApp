@@ -18,7 +18,7 @@ function App() {
       <Header as='h2' icon='users' content='Activities' />
       <List>
         {activities.map((activity: any) => {
-          return <li key={activity.id}>{activity.title}</li>
+          return <li key={activity.id}>{activity.id} - {activity.title}</li>
         })}
       </List>
     </div>

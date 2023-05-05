@@ -5,7 +5,7 @@ using Persistence;
 
 namespace Application.Activities
 {
-    public class MultipleActivities
+    public class ListActivities
     {
         public class Query : IRequest<List<Activity>> {}
 

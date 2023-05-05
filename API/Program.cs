@@ -29,7 +29,7 @@ builder.Services.AddCors(option => {
 
 // Setting up the standard place do lookup all handlers and register them 
 // Put a handler so it knows where its located and where to look
-builder.Services.AddMediatR(typeof(MultipleActivities.Handler));
+builder.Services.AddMediatR(typeof(ListActivities.Handler));
 
 var app = builder.Build();
 
