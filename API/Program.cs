@@ -1,4 +1,5 @@
 using Application.Activities;
+using Application.Core;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -30,6 +31,9 @@ builder.Services.AddCors(option => {
 // Setting up the standard place do lookup all handlers and register them 
 // Put a handler so it knows where its located and where to look
 builder.Services.AddMediatR(typeof(ListActivities.Handler));
+
+// Setting standard element for finding mappers.
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 var app = builder.Build();
 
