@@ -5,9 +5,14 @@ import { Activity } from '../../../models/activity'
 interface Props {
   closeForm: () => void
   selectedActivity: Activity | undefined
+  handleCreateOrEditActivity: (activity: Activity) => void
 }
 
-export const ActivityForm = ({ closeForm, selectedActivity }: Props) => {
+export const ActivityForm = ({
+  handleCreateOrEditActivity,
+  closeForm,
+  selectedActivity,
+}: Props) => {
   const [activity, setActivity] = useState(
     selectedActivity ?? {
       id: '',
@@ -29,7 +34,11 @@ export const ActivityForm = ({ closeForm, selectedActivity }: Props) => {
 
   return (
     <Segment clearing>
-      <Form>
+      <Form
+        onSubmit={() => {
+          handleCreateOrEditActivity(activity)
+        }}
+      >
         <Form.Input
           placeholder='Title'
           value={activity.title}

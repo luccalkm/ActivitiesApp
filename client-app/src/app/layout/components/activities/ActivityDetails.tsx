@@ -14,7 +14,10 @@ export const ActivityDetails = ({
 }: Props) => (
   <Card fluid>
     <Image
-      src={require(`../../../assets/categoryImages/${activity.category}.jpg`)}
+      src={
+        require(`../../../assets/categoryImages/${activity.category}.jpg`) ||
+        'picture'
+      }
     />
     <Card.Content>
       <Card.Header>{activity.title}</Card.Header>
