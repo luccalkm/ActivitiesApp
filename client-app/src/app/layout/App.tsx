@@ -5,13 +5,17 @@ import Navbar from './components/Navbar'
 import ActivityDashboard from './pages/ActivityDashboard'
 import { v4 as uuid } from 'uuid'
 import agent from '../api/agent'
+import Loading from './components/Loading'
 
 export const App = () => {
+  // App state variables
   const [activities, setActivities] = useState<Activity[]>([])
   const [selectedActivity, setSelectedActivity] = useState<
     Activity | undefined
   >(undefined)
   const [editMode, setEditMode] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
 
   const selectActivity = (id: string) => {
     setSelectedActivity(activities.find((activity) => activity.id === id))
@@ -32,19 +36,36 @@ export const App = () => {
   const closeForm = () => {
     setEditMode(false)
   }
+
   const handleCreateOrEditActivity = (activity: Activity) => {
-    activity.id
-      ? setActivities([
+    setSubmitting(true)
+    if (activity.id) {
+      agent.Activities.update(activity).then(() => {
+        setActivities([
           ...activities.filter((item) => item.id !== activity.id),
           activity,
         ])
-      : setActivities([...activities, { ...activity, id: uuid() }])
-    setEditMode(false)
-    setSelectedActivity(activity)
+        setSelectedActivity(activity)
+        setEditMode(false)
+        setSubmitting(false)
+      })
+    } else {
+      activity.id = uuid()
+      agent.Activities.create(activity).then(() => {
+        setActivities([...activities, activity])
+        setSelectedActivity(activity)
+        setEditMode(false)
+        setSubmitting(false)
+      })
+    }
   }
 
   const handleDeleteActivity = (id: string) => {
-    setActivities([...activities.filter((item) => item.id !== id)])
+    setSubmitting(true)
+    agent.Activities.delete(id).then(() => {
+      setActivities([...activities.filter((item) => item.id !== id)])
+      setSubmitting(false)
+    })
   }
 
   useEffect(() => {
@@ -57,13 +78,13 @@ export const App = () => {
       })
 
       setActivities(activities)
+      setLoading(false)
     })
-    // axios
-    //   .get<Activity[]>('http://localhost:5000/api/activities')
-    //   .then((res) => {
-    //     setActivities(res.data)
-    //   })
   }, [])
+
+  if (loading) {
+    return <Loading content='Loading app...' />
+  }
 
   return (
     <>
@@ -79,6 +100,7 @@ export const App = () => {
           openForm={openForm}
           handleDeleteActivity={handleDeleteActivity}
           closeForm={closeForm}
+          submitting={submitting}
         />
       </Container>
     </>

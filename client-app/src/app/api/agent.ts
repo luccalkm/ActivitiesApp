@@ -1,8 +1,28 @@
 import axios, { AxiosResponse } from 'axios'
 import { Activity } from '../models/activity'
 
+// Setting loader delay
+const sleep = (delay: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay)
+  })
+}
+
 axios.defaults.baseURL = 'http://localhost:5000/api'
 
+axios.interceptors.response.use(async (response) => {
+  try {
+    await sleep(1000)
+    return response
+  } catch (error) {
+    console.log(error)
+    return await Promise.reject(error)
+  }
+})
+
+// In order to add type safety for more specific parts of the code
+// I was needed to define generic types to the ones that came before
+// Therefore, the <T>
 const responseBody = <T>(response: AxiosResponse<T>) => response.data
 
 const requests = {
@@ -14,7 +34,13 @@ const requests = {
 }
 
 const Activities = {
+  // Adding type safety to CRUD operations
   list: () => requests.get<Activity[]>('/activities'),
+  details: (id: string) => requests.get<Activity>(`/activities/${id}`),
+  create: (activity: Activity) => requests.post<void>('/activities', activity),
+  update: (activity: Activity) =>
+    requests.put<void>(`/activities/${activity.id}`, activity),
+  delete: (id: string) => requests.delete<void>(`/activities/${id}`),
 }
 
 const agent = {

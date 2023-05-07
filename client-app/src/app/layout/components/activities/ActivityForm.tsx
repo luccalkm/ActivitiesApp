@@ -1,14 +1,16 @@
 import React, { ChangeEvent, useState } from 'react'
-import { Button, Form, Segment } from 'semantic-ui-react'
+import { Button, Form, Segment, Sticky } from 'semantic-ui-react'
 import { Activity } from '../../../models/activity'
 
 interface Props {
   closeForm: () => void
   selectedActivity: Activity | undefined
   handleCreateOrEditActivity: (activity: Activity) => void
+  submitting: boolean
 }
 
 export const ActivityForm = ({
+  submitting,
   handleCreateOrEditActivity,
   closeForm,
   selectedActivity,
@@ -33,7 +35,7 @@ export const ActivityForm = ({
   }
 
   return (
-    <Segment clearing>
+    <Segment color='blue' clearing>
       <Form
         onSubmit={() => {
           handleCreateOrEditActivity(activity)
@@ -78,6 +80,7 @@ export const ActivityForm = ({
         />
         <Button.Group floated='right' widths='2'>
           <Button
+            loading={submitting}
             className='basic'
             type='submit'
             content='Submit'
