@@ -1,20 +1,13 @@
-import React, { ChangeEvent, useState } from 'react'
-import { Button, Form, Segment, Sticky } from 'semantic-ui-react'
+import { ChangeEvent, useState } from 'react'
+import { Button, Form, Segment } from 'semantic-ui-react'
+import { useStore } from '../../../stores/store'
+import { observer } from 'mobx-react-lite'
 import { Activity } from '../../../models/activity'
 
-interface Props {
-  closeForm: () => void
-  selectedActivity: Activity | undefined
-  handleCreateOrEditActivity: (activity: Activity) => void
-  submitting: boolean
-}
+export const ActivityForm = () => {
 
-export const ActivityForm = ({
-  submitting,
-  handleCreateOrEditActivity,
-  closeForm,
-  selectedActivity,
-}: Props) => {
+  const {activityStore: { selectedActivity, closeForm, loading, createActivity, updateActivity }} = useStore();
+
   const [activity, setActivity] = useState(
     selectedActivity ?? {
       id: '',
@@ -27,6 +20,10 @@ export const ActivityForm = ({
     }
   )
 
+  const handleSubmit = (activity: Activity) => {
+    activity.id ? updateActivity(activity) : createActivity(activity)
+  }
+
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -38,7 +35,7 @@ export const ActivityForm = ({
     <Segment color='blue' clearing>
       <Form
         onSubmit={() => {
-          handleCreateOrEditActivity(activity)
+          handleSubmit(activity)
         }}
       >
         <Form.Input
@@ -80,7 +77,7 @@ export const ActivityForm = ({
         />
         <Button.Group floated='right' widths='2'>
           <Button
-            loading={submitting}
+            loading={loading}
             className='basic'
             type='submit'
             content='Submit'
@@ -99,4 +96,4 @@ export const ActivityForm = ({
   )
 }
 
-export default ActivityForm
+export default observer(ActivityForm)
