@@ -5,3 +5,4 @@
 ## Development
 - SQLite to make the development stage more portable and easy.
 - Multiprojects to help the understanding/clean architecture
+- Low complexity code to higher complexity code
