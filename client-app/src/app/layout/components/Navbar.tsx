@@ -1,24 +1,22 @@
-import React from 'react'
 import { Button, Container, Menu } from 'semantic-ui-react'
-import { useStore } from '../../stores/store';
 import { observer } from 'mobx-react-lite';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   const logo = require('../../assets/logo.png') ?? 'logo'
 
-  const {activityStore} = useStore(); 
-
   return (
     <Menu inverted fixed='top'>
-      <Container style={{ display: 'flex', flexDirection: 'row-reverse' }}>
-        <Menu.Item header>
+      <Container style={{ display: 'flex' }}>
+        <Menu.Item as={NavLink} to='/' header>
           <img src={logo} alt='logo' style={{ marginRight: '10px' }} />
           Activities
         </Menu.Item>
-        <Menu.Item name='Activities' />
-        <Menu.Item>
+        <Menu.Item as={NavLink} to='/activities' name='Activities' />
+        <Menu.Item >
           <Button
-            onClick={() => activityStore.openForm()}
+            as={NavLink}
+            to='/create-activity'
             positive
             content='Create Activity'
           />
