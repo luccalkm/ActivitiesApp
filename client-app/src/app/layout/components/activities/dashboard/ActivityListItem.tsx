@@ -1,19 +1,19 @@
-import { observer } from 'mobx-react-lite'
-import { Link } from 'react-router-dom';
-import { Button, Item, Label } from 'semantic-ui-react';
-import { Activity } from '../../../../models/activity';
-import { useStore } from '../../../../stores/store';
-import { SyntheticEvent, useState } from 'react';
+import { observer } from "mobx-react-lite";
+import { Link } from "react-router-dom";
+import { Button, Icon, Item, Segment } from "semantic-ui-react";
+import { Activity } from "../../../../models/activity";
+import { useStore } from "../../../../stores/store";
+import { SyntheticEvent, useState } from "react";
 
 interface Props {
-  activity: Activity
+  activity: Activity;
 }
 
-const ActivityListItem = ({activity}: Props) => {
+const ActivityListItem = ({ activity }: Props) => {
   const [target, setTarget] = useState("");
 
   const {
-    activityStore: { deleteActivity, loading },
+    activityStore: { deleteActivity },
   } = useStore();
 
   const handleTargetDelete = (
@@ -23,41 +23,46 @@ const ActivityListItem = ({activity}: Props) => {
     setTarget(e.currentTarget.name);
     deleteActivity(id);
   };
-  
+
   return (
-    <Item key={activity.id}>
-    <Item.Content>
-      <Item.Header as="a">{activity.title}</Item.Header>
-      <Item.Meta>{activity.date}</Item.Meta>
-      <Item.Description>
-        <div>{activity.description}</div>
-        <div>
-          {activity.city}, {activity.venue}
-        </div>
-      </Item.Description>
-      <Item.Extra>
+    <Segment.Group>
+      <Segment>
+        <Item.Group>
+          <Item>
+            <Item.Image
+              size="tiny"
+              circular
+              src="../../../../assets/user.png"
+            />
+            <Item.Content>
+              <Item.Header as={Link} to={`/activities/${activity.id}`}>
+                {activity.title}
+              </Item.Header>
+              <Item.Description>Hosted By Lucca</Item.Description>
+            </Item.Content>
+          </Item>
+        </Item.Group>
+      </Segment>
+      <Segment>
+        <span>
+          <Icon name="clock" /> {activity.date}
+          <Icon style={{marginLeft: '20px'}} name="marker" /> {activity.venue}
+          <Icon style={{marginLeft: '20px'}} name="building" /> {activity.city}
+        </span>
+      </Segment>
+      <Segment secondary>Attendees go here</Segment>
+      <Segment clearing>
+        <span>{activity.description}</span>
         <Button
-          name={activity.id}
-          loading={loading && target === activity.id}
-          onClick={(e) => {
-            handleTargetDelete(e, activity.id);
-          }}
+          content="View"
+          color="teal"
           floated="right"
-          content="Delete"
-          color="red"
-        />
-        <Button
           as={Link}
           to={`/activities/${activity.id}`}
-          floated="right"
-          content="View"
-          color="blue"
         />
-        <Label basic content={activity.category} />
-      </Item.Extra>
-    </Item.Content>
-  </Item>
-  )
-}
+      </Segment>
+    </Segment.Group>
+  );
+};
 
-export default observer(ActivityListItem)
+export default observer(ActivityListItem);
