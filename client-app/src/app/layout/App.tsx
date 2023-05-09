@@ -1,5 +1,5 @@
 import { Container } from "semantic-ui-react";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/common/Navbar";
 import { observer } from "mobx-react-lite";
 import { Outlet, useLocation } from "react-router-dom";
 import Home from "./pages/Home";

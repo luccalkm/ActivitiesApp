@@ -1,6 +1,6 @@
 import { Button, Card, Image } from 'semantic-ui-react'
-import { useStore } from '../../../stores/store'
-import Loading from '../Loading';
+import { useStore } from '../../../../stores/store'
+import Loading from '../../common/Loading';
 import { observer } from 'mobx-react-lite';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -24,7 +24,7 @@ export const ActivityDetails = () => {
   <Card  fluid>
     <Image
       src={
-        require(`../../../assets/categoryImages/${activity.category}.jpg`)
+        require(`../../../../assets/categoryImages/${activity.category}.jpg`)
       }
     />
     <Card.Content>

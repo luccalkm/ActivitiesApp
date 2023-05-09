@@ -1,9 +1,9 @@
 import { Grid } from "semantic-ui-react";
-import ActivityList from "./activities/ActivityList";
-import { useStore } from "../../stores/store";
+import ActivityList from "./ActivityList";
+import { useStore } from "../../../../stores/store";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
-import Loading from "./Loading";
+import Loading from "../../common/Loading";
 
 export const ActivityDashboard = () => {
   const {

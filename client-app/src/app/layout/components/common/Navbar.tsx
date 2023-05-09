@@ -3,13 +3,12 @@ import { observer } from 'mobx-react-lite';
 import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
-  const logo = require('../../assets/logo.png') ?? 'logo'
 
   return (
     <Menu inverted fixed='top'>
       <Container style={{ display: 'flex' }}>
         <Menu.Item as={NavLink} to='/' header>
-          <img src={logo} alt='logo' style={{ marginRight: '10px' }} />
+          <img src={'../../../../assets/logo.png'} alt='logo' style={{ marginRight: '10px' }} />
           Activities
         </Menu.Item>
         <Menu.Item as={NavLink} to='/activities' name='Activities' />

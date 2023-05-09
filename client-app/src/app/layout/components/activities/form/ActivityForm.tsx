@@ -1,11 +1,11 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
-import { useStore } from "../../../stores/store";
+import { useStore } from "../../../../stores/store";
 import { observer } from "mobx-react-lite";
-import { Activity } from "../../../models/activity";
+import { Activity } from "../../../../models/activity";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {v4 as uuid} from 'uuid';
-import Loading from "../Loading";
+import Loading from "../../common/Loading";
 
 export const ActivityForm = () => {
   const {
