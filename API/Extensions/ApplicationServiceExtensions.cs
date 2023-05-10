@@ -3,6 +3,8 @@ using Application.Core;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 
 namespace API.Extensions
 {
@@ -35,6 +37,9 @@ namespace API.Extensions
             // Setting standard element for finding mappers.
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
+            services.AddFluentValidationAutoValidation();
+
+            services.AddValidatorsFromAssemblyContaining<Create>();
             return services;
         }
     }
