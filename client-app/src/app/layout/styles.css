@@ -55,3 +55,7 @@ body {
 		background-position: 0% 50%;
 	}
 }
+
+.errorPlaceholder::placeholder {
+  color: #9f3a38!important;
+}
