@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Button, Segment } from "semantic-ui-react";
+import { Fragment, useEffect, useState } from "react";
+import { Button, Header, Icon, Segment } from "semantic-ui-react";
 import { useStore } from "../../../../stores/store";
 import { observer } from "mobx-react-lite";
 import { Activity } from "../../../../models/activity";
@@ -7,7 +7,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import Loading from "../../common/Loading";
 import { Formik, Form } from "formik";
-import * as Yup from 'yup';
+import * as Yup from "yup";
 import LTextArea from "./common/LTextArea";
 import LFormInput from "./common/LFormInput";
 import LSelectInput from "./common/LSelectInput";
@@ -24,7 +24,7 @@ export const ActivityForm = () => {
       updateActivity,
     },
   } = useStore();
-
+  
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -43,73 +43,101 @@ export const ActivityForm = () => {
     if (id) loadActivity(id).then((activity) => setActivity(activity!));
   }, [id, loadActivity]);
 
-  // const handleSubmit = (activity: Activity) => {
-  //   if (!activity.id) {
-  //     activity.id = uuid();
-  //     createActivity(activity).then(() => navigate(`/activities/${activity.id}`))
-  //   }
-  //   else{
-  //     updateActivity(activity).then(() => navigate(`/activities/${activity.id}`))
-  //   }
-  // };
-
-  // const handleChange = (
-  //   e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
-  // ) => {
-  //   const { name, value } = e.target;
-  //   setActivity({ ...activity, [name]: value });
-  // };
+  const handleSubmit = (activity: Activity) => {
+    if (activity.id.length === 0) 
+    {
+      let newActivity = {
+        ...activity,
+        id: uuid()
+      };
+      createActivity(newActivity).then(() => navigate(`/activities/${newActivity.id}`))
+    }
+    else{
+      updateActivity(activity).then(() => navigate(`/activities/${activity.id}`))
+    }
+  };
 
   const validationSchema = Yup.object({
-    title: Yup.string().required('Title is required.'),
-    description: Yup.string().required('Description is required.'),
-    category: Yup.string().required('Category is required.'),
-    city: Yup.string().required('City is required.'),
-    venue: Yup.string().required('Venue is required.'),
-
-  })
+    title: Yup.string().required("Title is required."),
+    description: Yup.string().required("Description is required."),
+    category: Yup.string().required("Category is required."),
+    date: Yup.string().required("Date is required"),
+    city: Yup.string().required("City is required."),
+    venue: Yup.string().required("Venue is required."),
+  });
 
   if (loadingInitial) return <Loading content="Loading activity..." />;
 
   return (
-    <Segment color="blue" clearing>
+    <Fragment>
       <Formik
         validationSchema={validationSchema}
         enableReinitialize
         initialValues={activity}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => handleSubmit(values)}
       >
-        {({ handleSubmit }) => (
+        {({ handleSubmit, isValid, isSubmitting, dirty }) => (
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
-
-            <LFormInput name='title' placeholder="Title" />
-            <LTextArea rows={3} placeholder="Description" name="description" />
-            <LSelectInput options={categoryOptions} placeholder="Category" name="category" />
-            <LDateInput showTimeSelect timeCaption='time' dateFormat='dd/MM/yyyy HH:mm' name="date" />
-            <LFormInput placeholder="City" name="city" />
-            <LFormInput placeholder="Venue" name="venue" />
-
-            <Button.Group floated="right" widths="2">
-              <Button
-                loading={loading}
-                className="basic"
-                type="submit"
-                content="Submit"
-                color="blue"
+            {/* First part of form - ACTIVITY DETAILS */}
+            <Segment color='teal'>
+              <Header content="Activity Details" sub color="teal" />
+              <LFormInput name="title" placeholder="Title" />
+              <LDateInput
+                showTimeSelect
+                timeCaption="time"
+                dateFormat="dd/MM/yyyy HH:mm"
+                name="date"
               />
-              <Button
-                as={Link}
-                to="/activities"
-                className="basic"
-                type="button"
-                content="Cancel"
-                color="red"
+              <LTextArea
+                rows={3}
+                placeholder="Description"
+                name="description"
               />
-            </Button.Group>
+              <LSelectInput
+                options={categoryOptions}
+                placeholder="Category"
+                name="category"
+              />
+            </Segment>
+
+            {/* First part of form - LOCATION DETAILS */}
+            <Segment color='teal'clearing>
+              <Header content="Location Details" sub color="teal" />
+              <LFormInput placeholder="City" name="city" />
+              <LFormInput placeholder="Venue" name="venue" />
+              <Button.Group fluid floated="right">
+                <Button
+                  animated="vertical"
+                  loading={loading}
+                  disabled={isSubmitting || !dirty || !isValid}
+                  basic
+                  color={isSubmitting || !dirty || !isValid ? "black" : "teal"}
+                  type="submit"
+                >
+                  <Button.Content visible>Submit</Button.Content>
+                  <Button.Content hidden>
+                    <Icon name="checkmark" />
+                  </Button.Content>
+                </Button>
+                <Button
+                  animated="vertical"
+                  color="red"
+                  as={Link}
+                  basic
+                  to="/activities"
+                  type="button"
+                >
+                  <Button.Content visible>Cancel</Button.Content>
+                  <Button.Content hidden>
+                    <Icon name="close" />
+                  </Button.Content>
+                </Button>
+              </Button.Group>
+            </Segment>
           </Form>
         )}
       </Formik>
-    </Segment>
+    </Fragment>
   );
 };
 

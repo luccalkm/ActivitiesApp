@@ -59,3 +59,8 @@ body {
 .errorPlaceholder::placeholder {
   color: #9f3a38!important;
 }
+
+.hovering {
+  background: rgb(32, 167, 172)!important;
+  color: white!important;
+}

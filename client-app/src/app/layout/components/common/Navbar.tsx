@@ -17,7 +17,7 @@ const Navbar = () => {
           <Button
             as={NavLink}
             to='/create-activity'
-            positive
+            color='teal'
             content='Create Activity'
           />
         </Menu.Item>

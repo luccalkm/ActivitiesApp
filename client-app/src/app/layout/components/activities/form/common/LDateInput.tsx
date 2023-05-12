@@ -7,12 +7,22 @@ const LDateInput = (props: Partial<ReactDatePickerProps>) => {
 
   return (
     <Form.Field error={meta.touched && !!meta.error}>
-      <DatePicker
-        {...field}
-        {...props}
-        selected={(field.value && new Date(field.value)) || null}
-        onChange={(value) => helpers.setValue(value)}
-      />
+      {meta.touched && meta.error ? (
+        <DatePicker
+          {...field}
+          {...{ placeholderText: meta.error  }}
+          selected={(field.value && new Date(field.value)) || null}
+          onChange={(value) => helpers.setValue(value)}
+        />
+      ) : (
+        <DatePicker
+          {...field}
+          {...props}
+          {...{ placeholderText: 'Date' }}
+          selected={(field.value && new Date(field.value)) || null}
+          onChange={(value) => helpers.setValue(value)}
+        />
+      )}
     </Form.Field>
   );
 };
