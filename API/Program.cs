@@ -1,5 +1,7 @@
 using API.Extensions;
 using API.Middleware;
+using Domain;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -9,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Method to center all the services created.
+builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddAplicationServices(builder.Configuration);
 
 var app = builder.Build();
@@ -39,10 +42,11 @@ var services = scope.ServiceProvider;
 try
 {
     var context = services.GetRequiredService<DataContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
     // Migrate transactions and execute them if needed
     await context.Database.MigrateAsync();
     // Get seed data into context var, referencing the DataContext, therefore, the database.
-    await Seed.SeedData(context);
+    await Seed.SeedData(context, userManager);
 }
 catch (Exception ex)
 {
