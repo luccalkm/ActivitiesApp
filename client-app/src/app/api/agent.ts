@@ -3,6 +3,7 @@ import { Activity } from '../models/activity'
 import { toast } from 'react-toastify'
 import { router } from '../router/Routes'
 import { store } from '../stores/store'
+import { User, UserFormValues } from '../models/user'
 
 // Setting loader delay
 const sleep = (delay: number) => {
@@ -13,50 +14,50 @@ const sleep = (delay: number) => {
 
 axios.defaults.baseURL = 'http://localhost:5000/api'
 
-axios.interceptors.response.use(async (response) => {
+axios.interceptors.response.use(
+  async (response) => {
     await sleep(1000)
     return response
-}, (error: AxiosError) => {
-  const  {data, status, config} = error.response as AxiosResponse;
+  },
+  (error: AxiosError) => {
+    const { data, status, config } = error.response as AxiosResponse
 
-  switch (status) 
-  {
-    case 400:
-      if(config.method === 'get' && data.errors.hasOwnProperty('id')) 
-      {
-        router.navigate('/not-found')
-      }
-      
-      if(data.errors){
-        const modalStateErrors = [];
-        for(const key in data.errors){
-          if(data.errors[key]){
-            modalStateErrors.push(data.errors[key][0])
-          }
+    switch (status) {
+      case 400:
+        if (config.method === 'get' && data.errors.hasOwnProperty('id')) {
+          router.navigate('/not-found')
         }
-        throw modalStateErrors.flat();
-      }
-      else{
-        toast.error(data);
-      }
-      break;
-    case 401:
-      toast.error('Unathorized')
-      break;
-    case 403:
-      toast.error('Forbidden')
-      break;
-    case 404:
-      router.navigate('/not-found')
-      break;
-    case 500:
-      store.commonStore.setServerError(data)
-      router.navigate('/server-error')
-      break;
-  }
 
-  return Promise.reject(error);
-})
+        if (data.errors) {
+          const modalStateErrors = []
+          for (const key in data.errors) {
+            if (data.errors[key]) {
+              modalStateErrors.push(data.errors[key][0])
+            }
+          }
+          throw modalStateErrors.flat()
+        } else {
+          toast.error(data)
+        }
+        break
+      case 401:
+        toast.error('Unathorized')
+        break
+      case 403:
+        toast.error('Forbidden')
+        break
+      case 404:
+        router.navigate('/not-found')
+        break
+      case 500:
+        store.commonStore.setServerError(data)
+        router.navigate('/server-error')
+        break
+    }
+
+    return Promise.reject(error)
+  }
+)
 
 // In order to add type safety for more specific parts of the code
 // I was needed to define generic types to the ones that came before
@@ -81,8 +82,17 @@ const Activities = {
   delete: (id: string) => requests.delete<void>(`/activities/${id}`),
 }
 
+const Account = {
+  // Adding type safety to CRUD operations
+  currentUser: () => requests.get<User>('/account'),
+  login: (user: UserFormValues) => requests.post<User>('/account/login', user),
+  register: (user: UserFormValues) =>
+    requests.post<User>('/account/register', user),
+}
+
 const agent = {
   Activities,
+  Account,
 }
 
 export default agent
