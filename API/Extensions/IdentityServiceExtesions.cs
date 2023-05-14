@@ -1,24 +1,41 @@
+using System.Text;
 using Domain;
 using Persistence;
 using API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Extensions
 {
-  public static class IdentityServiceExtesions
-  {
-    public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
-    {
-      services.AddIdentityCore<AppUser>(opt =>
-      {
-        opt.Password.RequireNonAlphanumeric = false;
-      })
-      .AddEntityFrameworkStores<DataContext>();
+	public static class IdentityServiceExtesions
+	{
+		public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
+		{
+			services.AddIdentityCore<AppUser>(opt =>
+			{
+				opt.Password.RequireNonAlphanumeric = false;
+				opt.User.RequireUniqueEmail = true;
+			})
+			.AddEntityFrameworkStores<DataContext>();
 
-      services.AddAuthentication();
+			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
 
-      services.AddScoped<TokenService>();
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+			.AddJwtBearer(opt =>
+			{
+				opt.TokenValidationParameters = new TokenValidationParameters
+				{
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = key,
+					ValidateIssuer = false,
+					ValidateAudience = false,
+				};
+			});
 
-      return services;
-    }
-  }
+
+			services.AddScoped<TokenService>();
+
+			return services;
+		}
+	}
 }
