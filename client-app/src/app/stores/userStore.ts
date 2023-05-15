@@ -23,6 +23,21 @@ export default class UserStore {
         this.user = user
       })
       router.navigate('/activities')
+      store.modalStore.closeModal()
+    } catch (error) {
+      throw error
+    }
+  }
+
+  register = async (creds: UserFormValues) => {
+    try {
+      const user = await agent.Account.register(creds)
+      store.commonStore.setToken(user.token)
+      runInAction(() => {
+        this.user = user
+      })
+      router.navigate('/activities')
+      store.modalStore.closeModal()
     } catch (error) {
       throw error
     }
@@ -30,8 +45,18 @@ export default class UserStore {
 
   logout = () => {
     store.commonStore.setToken(null)
-    localStorage.removeItem('jwt')
     this.user = null
     router.navigate('/')
+  }
+
+  getUser = async () => {
+    try {
+      const user = await agent.Account.currentUser()
+      runInAction(() => {
+        this.user = user
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }

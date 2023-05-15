@@ -1,11 +1,12 @@
 import { useField } from 'formik'
-import { Form } from 'semantic-ui-react'
+import { Form, Input } from 'semantic-ui-react'
 
 interface Props {
   placeholder: string
   name: string
   type?: string
   label?: string
+  icon?: string | JSX.Element
 }
 
 const LFormInput = (props: Props) => {
@@ -15,14 +16,14 @@ const LFormInput = (props: Props) => {
     <Form.Field error={meta.touched && !!meta.error}>
       <label>{props.label}</label>
       {meta.touched && meta.error ? (
-        <input
+        <Input
           className='errorPlaceholder'
           {...field}
           {...props}
           {...{ placeholder: meta.error }}
         />
       ) : (
-        <input {...field} {...props} />
+        <Input {...field} {...props} />
       )}
     </Form.Field>
   )
