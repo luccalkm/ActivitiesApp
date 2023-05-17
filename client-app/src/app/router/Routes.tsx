@@ -3,9 +3,9 @@ import App from '../layout/App'
 import ActivityDashboard from '../layout/components/activities/dashboard/ActivityDashboard'
 import ActivityForm from '../layout/components/activities/form/ActivityForm'
 import ActivityDetails from '../layout/components/activities/details/ActivityDetails'
-import TestErrors from '../layout/errors/TestError'
-import NotFound from '../layout/errors/NotFound'
-import ServerError from '../layout/errors/ServerError'
+import TestErrors from '../layout/components/errors/TestError'
+import NotFound from '../layout/components/errors/NotFound'
+import ServerError from '../layout/components/errors/ServerError'
 import LoginForm from '../layout/components/users/LoginForm'
 
 export const routes: RouteObject[] = [

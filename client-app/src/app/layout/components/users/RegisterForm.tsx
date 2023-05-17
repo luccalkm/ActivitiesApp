@@ -5,7 +5,7 @@ import { Button, Header, Icon, Label } from 'semantic-ui-react'
 import { useStore } from '../../../stores/store'
 import { observer } from 'mobx-react-lite'
 import * as Yup from 'yup'
-import { ValidationError } from '../../errors/ValidationError'
+import { ValidationError } from '../errors/ValidationError'
 
 const RegisterForm = () => {
   const { userStore } = useStore()

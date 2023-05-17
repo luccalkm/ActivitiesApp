@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from 'react'
 import { Button, Header, Icon, Segment } from 'semantic-ui-react'
 import { useStore } from '../../../../stores/store'
 import { observer } from 'mobx-react-lite'
-import { Activity } from '../../../../models/activity'
+import { Activity, ActivityFormValues } from '../../../../models/activity'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { v4 as uuid } from 'uuid'
 import Loading from '../../common/Loading'
@@ -29,22 +29,19 @@ export const ActivityForm = () => {
 
   const navigate = useNavigate()
 
-  const [activity, setActivity] = useState<Activity>({
-    id: '',
-    title: '',
-    date: null,
-    description: '',
-    category: '',
-    city: '',
-    venue: '',
-  })
+  const [activity, setActivity] = useState<ActivityFormValues>(
+    new ActivityFormValues()
+  )
 
   useEffect(() => {
-    if (id) loadActivity(id).then((activity) => setActivity(activity!))
+    if (id)
+      loadActivity(id).then((activity) =>
+        setActivity(new ActivityFormValues(activity))
+      )
   }, [id, loadActivity])
 
-  const handleSubmit = (activity: Activity) => {
-    if (activity.id.length === 0) {
+  const handleSubmit = (activity: ActivityFormValues) => {
+    if (!activity.id) {
       let newActivity = {
         ...activity,
         id: uuid(),
@@ -110,7 +107,7 @@ export const ActivityForm = () => {
               <Button.Group fluid floated='right'>
                 <Button
                   animated='vertical'
-                  loading={loading}
+                  loading={isSubmitting}
                   disabled={isSubmitting || !dirty || !isValid}
                   basic
                   color={isSubmitting || !dirty || !isValid ? 'black' : 'teal'}
