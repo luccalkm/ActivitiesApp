@@ -5,6 +5,8 @@
 
 # App Settings
 appsettings.json
+*appsettings.json
+.\API\appsettings
 
 # Node Modules
 node_modules
