@@ -5,6 +5,7 @@ import { router } from '../router/Routes'
 import { store } from '../stores/store'
 import { User, UserFormValues } from '../models/user'
 import { Photo, Profile } from '../models/profile'
+import { request } from 'http'
 
 // Setting loader delay
 const sleep = (delay: number) => {
@@ -110,7 +111,9 @@ const Profiles = {
     })
   },
   setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
-  deletePhoto: (id: string) => axios.delete(`/photos/${id}`),
+  deletePhoto: (id: string) => requests.delete(`/photos/${id}`),
+  editProfile: (profile: Partial<Profile>) =>
+    requests.put(`/profiles`, profile),
 }
 
 const agent = {

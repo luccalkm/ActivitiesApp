@@ -10,11 +10,11 @@ import {
   Segment,
   Tab,
 } from 'semantic-ui-react'
-import { Photo } from '../../../models/profile'
-import { useStore } from '../../../stores/store'
+import { Photo } from '../../../../models/profile'
+import { useStore } from '../../../../stores/store'
 import { useState } from 'react'
 import ProfilePhotosSection from './ProfilePhotosSection'
-import PhotoUploadWidget from '../common/imageUpload/PhotoUploadWidget'
+import PhotoUploadWidget from '../../common/imageUpload/PhotoUploadWidget'
 
 interface Props {
   photos: Photo[] | undefined

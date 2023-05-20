@@ -8,7 +8,7 @@ import {
   ButtonGroup,
   Button,
 } from 'semantic-ui-react'
-import { Photo } from '../../../models/profile'
+import { Photo } from '../../../../models/profile'
 
 interface Props {
   photos: Photo[] | undefined
