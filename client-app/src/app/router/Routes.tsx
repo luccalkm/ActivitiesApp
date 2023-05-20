@@ -7,6 +7,7 @@ import TestErrors from '../layout/components/errors/TestError'
 import NotFound from '../layout/components/errors/NotFound'
 import ServerError from '../layout/components/errors/ServerError'
 import LoginForm from '../layout/components/users/LoginForm'
+import ProfilePage from '../layout/components/profiles/ProfilePage'
 
 export const routes: RouteObject[] = [
   {
@@ -48,6 +49,10 @@ export const routes: RouteObject[] = [
       {
         path: 'login',
         element: <LoginForm />,
+      },
+      {
+        path: 'profiles/:username',
+        element: <ProfilePage />,
       },
     ],
   },
