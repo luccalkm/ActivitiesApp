@@ -54,6 +54,8 @@ namespace API.Extensions
 
 			services.AddScoped<IPhotoAccessor, PhotoAccessor>();
 
+			services.AddSignalR();
+
 			return services;
 		}
 	}
