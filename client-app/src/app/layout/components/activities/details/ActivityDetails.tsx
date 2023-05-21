@@ -11,13 +11,19 @@ import { useParams } from 'react-router-dom'
 
 export const ActivityDetails = () => {
   const {
-    activityStore: { selectedActivity: activity, loadActivity, loadingInitial },
+    activityStore: {
+      selectedActivity: activity,
+      loadActivity,
+      loadingInitial,
+      clearSelectedActivity,
+    },
   } = useStore()
 
   const { id } = useParams()
 
   useEffect(() => {
     if (id) loadActivity(id)
+    return () => clearSelectedActivity()
   }, [id, loadActivity])
 
   if (loadingInitial || !activity) return <Loading />
@@ -27,7 +33,7 @@ export const ActivityDetails = () => {
       <Grid.Column width={9}>
         <ActivityDetailedHeader activity={activity} />
         <ActivityDetailedInfo activity={activity} />
-        <ActivityDetailedChat />
+        <ActivityDetailedChat activityId={activity.id} />
       </Grid.Column>
       <Grid.Column width={7}>
         <ActivityDetailedSidebar activity={activity} />

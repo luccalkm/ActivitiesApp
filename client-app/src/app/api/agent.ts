@@ -5,7 +5,6 @@ import { router } from '../router/Routes'
 import { store } from '../stores/store'
 import { User, UserFormValues } from '../models/user'
 import { Photo, Profile } from '../models/profile'
-import { request } from 'http'
 
 // Setting loader delay
 const sleep = (delay: number) => {

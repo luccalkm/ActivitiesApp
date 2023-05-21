@@ -6,7 +6,6 @@ import {
   Grid,
   GridColumn,
   Header,
-  Image,
 } from 'semantic-ui-react'
 import PhotoWidgetDropzone from './PhotoWidgetDropzone'
 import PhotoWidgetCropper from './PhotoWidgetCropper'

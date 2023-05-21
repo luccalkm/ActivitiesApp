@@ -1,7 +1,7 @@
 import { ErrorMessage, Form, Formik } from 'formik'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import LFormInput from '../common/forms/LFormInput'
-import { Button, Header, Icon, Label } from 'semantic-ui-react'
+import { Button, Icon, Label } from 'semantic-ui-react'
 import { useStore } from '../../../stores/store'
 import { observer } from 'mobx-react-lite'
 

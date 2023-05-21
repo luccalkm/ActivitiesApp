@@ -28,8 +28,6 @@ const ProfilePhotosSection = ({
   const [target, setTarget] = useState('')
   const [localPhotos, setLocalPhotos] = useState<Photo[] | undefined>(photos)
 
-  const handleClicking = () => {}
-
   const handleSetMainPhoto = (
     photo: Photo,
     e: SyntheticEvent<HTMLButtonElement>
@@ -55,7 +53,7 @@ const ProfilePhotosSection = ({
         <Card key={photo.id}>
           <Image src={photo.url} />
           {isCurrentUser && (
-            <ButtonGroup fluid widths={2}>
+            <ButtonGroup fluid={photo.isMain} widths={2}>
               <Button
                 basic
                 color='teal'
@@ -65,15 +63,17 @@ const ProfilePhotosSection = ({
                 loading={target === 'main' + photo.id && loading}
                 onClick={(e) => handleSetMainPhoto(photo, e)}
               />
-              <Button
-                basic
-                color='red'
-                icon='trash'
-                loading={target === photo.id && loading}
-                name={photo.id}
-                onClick={(e) => handleDeletePhoto(photo, e)}
-                disabled={photo.isMain}
-              />
+              {!photo.isMain && (
+                <Button
+                  basic
+                  color='red'
+                  icon='trash'
+                  loading={target === photo.id && loading}
+                  name={photo.id}
+                  onClick={(e) => handleDeletePhoto(photo, e)}
+                  disabled={photo.isMain}
+                />
+              )}
             </ButtonGroup>
           )}
         </Card>
